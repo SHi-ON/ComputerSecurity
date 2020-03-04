@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8.12)
+project(Algorithms)
+set(CMAKE_CXX_STANDARD 11)
 
-project(tinyaes C ASM)
+cmake_minimum_required(VERSION 3.14)
 
-add_library(tiny-aes
-        aes.c
-        )
 
-target_include_directories(tiny-aes PRIVATE tiny-AES-c/)
+add_executable(bmp bmpinfo.c bmp.c)
