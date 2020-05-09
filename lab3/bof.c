@@ -4,9 +4,14 @@
 int chkserial(char *s)
 {
      char buffer[16];
-     strcpy(buffer, s);
 
-     return strcmp(buffer, "cs727827");
+//     strcpy(buffer, s);
+     strncpy(buffer, s,8);
+
+     int res = strncmp(buffer, "cs727827",8);
+//     int res = strcmp(buffer, "cs727827");
+
+     return res;
 }
 
 void fullversion()
