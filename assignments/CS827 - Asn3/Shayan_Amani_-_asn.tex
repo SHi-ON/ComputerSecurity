@@ -1,0 +1,257 @@
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+
+\usepackage{inconsolata}
+
+% Required
+\newcommand{\assignmentQuestionName}{Question} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{March, 30, 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Assignment 3} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+%---------------------------------
+%	QUESTION 1
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+    \begin{subquestion}{}
+    
+        \answer{
+            Compared to keeping the passwords in the plain text form in a file, storing hashed passwords are way more secure way to store passwords. There are a myriad of advantages to this approach and I enumerate a couple of them here.
+            
+            In order to authenticate a user by their password, in a hashed case, we can simply compare the hashed value of the entered string to the stored hash value for that user and then let them in if equals. In this case we don't reveal the real plain text password which holds the whole passwords away from intrusions. As $d = h(p)$ explains, $d$ as the hashed value is the only thing that could be dealt with and $p$ as the plain text password stays off of this exchange.
+            
+            As we all know, symmetric encryption is a \textbf{reversible operation} in contrast to the hashing approach which is a \textbf{one-way method}. So by hashing, we guarantee that there is no way to access to the real plain text passwords. We still need to bear this point in mind that a secure and well-designed hash function need to be utilized all over this scenario.
+            
+            Hence retrieving passwords from the stored hashed passwords is not feasible then the password files remain protected.
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            File encryption using symmetric key encryption has it's own security flaws in case of password storage. Since encryption is a reversible process, \textbf{Trudy} can have access to the \textbf{decryption key} file and can manage to decrypt the password file and hence access to all plain text passwords. However cryptographic hashing facility provide an irreversible process to store passwords in a way that the original plain text passwords stay safe and also steers Trudy clear of the plain text passwords. 
+            
+            So keeping hashed passwords in a file is way safer and more secure than password file encryption.
+            
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            We add a \textbf{publicly visible value} to the password before hashing the password. The hashed password and the plaintext salt is kept in the password file. The salt is chosen randomly and then will be used to generate hashed password along with the plain text password:
+            
+                $y = h(passwd, salt)$
+            
+            The main purpose of using salt is \textbf{making the computation harder for Trudy}. By adding salt to the password even for the simple and common passwords the hashed value will be \textbf{different} than the ones that Trudy calculated for his/her password dictionary. This will take Trudy relatively \textbf{more computation power} than scenarios without salting. Salting will raise the number of expected computation for the intruder to get to the plaintext password as he needs to calculate hash of all possible passwords added the random salt to them. So in this way by adding salt to the passwords we increase the security of the password while it is used along with hashing.
+        }
+    \end{subquestion}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 2
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+    
+\begin{subquestion}{}
+    \answer{
+        If not salted, Trudy has to only calculate hash of the dictionary file once. So it takes $2^{30}$.
+    }
+\end{subquestion}
+
+\begin{subquestion}{}
+    \answer{
+        $128^8 = 2^{56}$ total possible passwords.
+        
+        After $2^{30} / 2 = 2^{29}$ tries, Trudy can expect to find the password in her dictionary with probability of $1/4$.
+        After $2^{56} / 2 = 2^{55}$ tries, Trudy can find the password out of the dictionary with probability of $ 1 - 1/4 = 3/4$.
+        
+        Therefore:
+        
+        $\frac{1}{4}\left(2^{29}\right)+\frac{3}{4}\left(2^{55}\right)$
+    }
+\end{subquestion}
+
+
+\begin{subquestion}{}
+    \answer{
+        The probability that we have at least one password appears in the dictionary, is equal to the complement of the probability of not appearing any passwords in the dictionary. So accordingly I can calculate it as follows:
+        
+        $1 - (3/4)^{2 ^ {10}} = 1 - (3/4) ^ {1024} \approx 1$
+    }
+\end{subquestion}
+%--------------------------------------------
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 3
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+    \answer{
+        The biometric sensors, collect and digitize the biometric inputs (e.g. fingerprint). Then the characteristics are stored to get retrieved later for any of three processes:
+                \begin{itemize}
+                    \item Enrollment
+                    \item Authentication
+                    \item Verification
+                \end{itemize}
+    }
+    
+    \begin{subquestion}{}
+        \answer{
+            The identification problem is a one-to-many kind of problem while the authentication problem is essentially a one-to-one problem. 
+            
+            In order to be able to log into the system, in a identification problem user only need to provide the biometric details. But in the case of authentication problem user also need to provide other credentials (e.g. name, password, PIN, etc.) to be able to log in.
+            
+            To verify, in an identification problem, the system has to compare the biometric features from the user against the entire templates available in the database. However in case of authentication problem, the system compares the template retrieved by the additional provided user information (e.g. name, password, PIN, etc.) to the biometric features from the user.
+            
+            The user can be successfully identified when the system can find a matching template in the database. If the retrieved template by the additional details and the one from the user match, the user can be authenticated. Otherwise in both cases the user is rejected.
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            The authentication problem is easier as the system has to match the template retrieved to the one provided by biometric features as it is a one-to-one problem. But in identification system has to look up the whole database for each identification instances as it is a one-to-many problem. Besides, identification problem is prone to risk of identifying similar templates (false positives).
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            Fraud rate is defined as wrongly identifying a person as someone else. It is a measure to determine the percentage of times that the system accepts invalid users. For instance, identifying Trudy as Alice. This is a false acceptance rate.
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            Insult rate is defined as wrongly not authenticating a person even though the person is recognized correctly. It is a measure to determine the percentage of times that the system cannot authenticate the valid users. For instance, not letting Alice in. This is a false rejection rate.
+        }
+    \end{subquestion}
+    
+\end{question}
+
+
+
+%---------------------------------
+%	QUESTION 4
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+    
+    \begin{subquestion}{}
+        \answer{
+            C-list is more emphasized in academia however ACL is practically simpler to implement. As ACL stores permissions of each users to a certain resource object. In this way, it is easier to group users based on their access permissions and delegate permissions to appropriate users.
+        }
+    \end{subquestion}
+    
+    \begin{subquestion}{}
+        \answer{
+            Using Capabilities:
+            
+            Alice delegates the permission for an object on her C-list to Bill who then delegates to Charlie, and Charlie delegates to Dave.
+            
+            Using ACLs:
+            
+            Alice will ask the object to give permissions to Bill who then asks to give permission to Charlie, and Charlie follows the same process for Dave.
+            
+            
+            As we are chaining users, it is easier to be done by capabilities because C-list is user-based unlike ACL which is being object-based. Therefore it is easier for users to delegate permissions to other users.
+        }
+    \end{subquestion}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 5
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+    \begin{subquestion}{}
+        \answer{
+            \begin{itemize}
+                \item Packet filter: operates at Transport layer as it filters certain ports, Internet layer, and Network access layer as it filters based on IP address.
+                
+                \item Stateful packet filter: operates similarly to Packet filter firewall at  Transport layer, Internet layer, and Network access layer.
+                
+                \item Application proxy: operates at Application layer as it inspects certain protocol states or data.
+            \end{itemize}
+        }
+    \end{subquestion}
+
+    \begin{subquestion}{}
+        \answer{
+             \begin{itemize}
+                \item Packet filter: filters based on information available in a network packet then enforces a set of rules on inbound and outbound IP packets. Information such as:
+                    \begin{itemize}
+                        \item Source and Destination IP address
+                        \item Source and Destination transport-level address such as TCP port number which determines the applications.
+                        \item IP protocol field which determines the transport protocol.
+                        \item Interface which decides which entry of the firewall the packet is exchanging with.
+                    \end{itemize}
+                
+                \item Stateful packet filter: enforces TCP traffic rules by a directory of outbound TCP connection by making an entry for all established connections. In this way it will allow to high-numbered ports only for the packets that fit the profiles o one of the entries in the directory.
+                
+                \item Application proxy: based on name of the remote host which will be accessed. By providing true credentials the proxy contacts the application on the remote host and establishes TCP connection.
+            \end{itemize}
+        }
+    \end{subquestion}
+
+    \begin{subquestion}{}
+        \answer{
+            \begin{itemize}
+                \item IP spoofing: which transmits packets from outside with a source IP field containing ad address of an internal host.
+                
+                \item Source routing: by determinig the route for a packet by bypassing the security facilites that are not sensitive to the source routing info.
+                
+                \item Piggyback on VPN connections: Accessing through tunneling to the terminal computer by using the trusted network credentials to implement attacks.
+                
+                \item Attacking exposed servers: By a variety of ways such as SQL injection, cross site scripting, DDoS, zeroday attacks. All by detecting exploits and taking advantage of them on a server. 
+            \end{itemize}
+        }
+    \end{subquestion}
+
+\end{question}
+
+%---------------------------------
+
+\end{document}

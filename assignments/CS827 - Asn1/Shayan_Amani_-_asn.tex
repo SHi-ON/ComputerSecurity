@@ -1,0 +1,198 @@
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+
+\usepackage{inconsolata}
+
+% Required
+\newcommand{\assignmentQuestionName}{Question} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{Monday, February 17, 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Assignment 1} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+%---------------------------------
+%	QUESTION 1
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\begin{array}{|c|c|c|c|c|}
+    \hline & col 1 & col 2 & col 3 & col 4 \\
+    \hline row 1 & l & e & a & l \\
+    \hline row 2 & e & t & h & r \\
+    \hline row 3 & a & w & e & r \\
+    \hline row 4 & g & t & o & e \\
+    \hline
+\end{array}
+
+\answer{Ciphertext: \textbf{lealethrawergtoe}}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 2
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\begin{array}{|c|c|c|c|}
+\hline 
+{x} & {y} & {z} & \\
+\hline 
+0 & {0} & {0} & {0} \\
+\hline 
+0 & {0} & {1} & {0} \\
+\hline 
+0 & {1} & {0} & {0} \\
+\hline 
+{1} & {0} & {0} & {0} \\
+\hline 
+0 & {1} & {1} & {1} \\
+\hline 
+{1} & {0} & {1} & {1} \\
+\hline 
+{1} & {1} & {0} & {1} \\
+\hline 
+{1} & {1} & {1} & {1} \\
+\hline 
+\end{array}
+
+\answer{
+
+According to the truth table above, half of the times we get zeros and other half, ones. As the majority function behaves like the max function, it resembles to me that I need to compare each pair of bits among these three bits, and then AND function is a good candidate for this purpose. Then for finding who holds the majority an OR or XOR fits as I tried and it seems reasonable since the number of bits is odd. So:
+
+$ maj(x, y, z) = (x \wedge y) \oplus(x \wedge z) \oplus(y \wedge z) = (x \wedge y) \vee (x \wedge z) \vee (y \wedge z)$
+
+}
+
+
+%--------------------------------------------
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 3
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+ $ L_1 = R_0,    L_2 = R_1,  L_3 = R_2,  L_4 = R_3$ \\\\
+$ R_1 = L_0 \oplus F(R_0, K_1),    R_2 = L_1 \oplus F(R_1, K_2),    R_3 = L_2 \oplus F(R_2, K_3)      R_4 = L_3 \oplus F(R_3, K_4$ \\\\
+
+\answer{Please note that, I have also attached the calculations for this problem in detail at the end of this document.}
+
+\begin{subquestion}{F\left(R_{i-1}, K_{i}\right)=0}
+
+\answer{
+    $L_4 = L_0$ \\\\
+    $R_4 = R_0$
+}
+
+\end{subquestion}
+
+
+\begin{subquestion}{F\left(R_{i-1}, K_{i}\right)=R_{i-1}}
+
+\answer{
+    $L_4 = R_0$ \\\\
+    $R_4 = L_0 \oplus R_0$
+}
+
+\end{subquestion}
+
+
+\begin{subquestion}{F\left(R_{i-1}, K_{i}\right)=K_{i}}
+
+\answer{
+    $L_4 = L_0 \oplus K_1 \oplus K_3$ \\\\
+    $R_4 = R_0 \oplus K_2 \oplus K_4$
+}
+
+\end{subquestion}
+
+
+\begin{subquestion}{F\left(R_{i-1}, K_{i}\right)=R_{i-1} \oplus K_{i}}
+
+\answer{
+    $L_4 = R_0 \oplus K_2 \oplus K_3$ \\\\
+    $R_4 = L_0 \oplus R_0 \oplus K_1 \oplus K_3 \oplus K_4$
+}
+
+\end{subquestion}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 4
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{TEA needs separate encryption and decryption routines so it is not a Feistel cipher. However TEA looks like Feistel cipher but takes more computation than Feistel cipher and it uses additions and subtractions instead of XORs. On the flip side, TEA uses \textit{weak} round functions which makes it look like a Feistel cipher.}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 5
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+    $P_0 = D(C_0 \oplus IV, K)$ \\
+    $P_1 = D(C_1 \oplus C_0, K)$ \\
+    $P_2 = D(C_2 \oplus C_1, K)$ \\
+    ... \\
+    $P_i = D(C_i \oplus C_{i-1}, K)$ \\\\
+    
+    \textbf{Disadvantages}: Trudy might know some information even without knowing the plaintext. Suppose that we have same plaintexts $P_i = P_j$ then $C_i = C_j$ so Trudy knows $P_i = P_j$. On the other end of this spectrum, same plaintext yields same ciphertext. As an example there is no more difference between an encrypted and uncompressed images with this method. However in CBC it yields two different ciphertext with a same plaintext input. An advantage of CBC is that it uses an IV which is random to add more randomness to the system, although it is not secretly hidden.
+}
+
+\end{question}
+
+
+\questiontext{Problem 3 calculations:} \\\\
+\includegraphics[scale=0.08]{p3-1.jpg}
+\includegraphics[scale=0.08]{p3-2.jpg}
+\includegraphics[scale=0.08]{p3-3.jpg}
+
+
+%---------------------------------
+
+\end{document}

@@ -1,0 +1,221 @@
+
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\usepackage{inconsolata}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+%% lst listing begin
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+%% lst listing end
+
+\newcommand{\NIL}{\mathrm{NIL}}
+
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+% Required
+\newcommand{\assignmentQuestionName}{} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{Wednesday,\ April\ 8,\ 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Lab 2} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+
+%---------------------------------
+%	REPORT
+%---------------------------------
+
+\section{Protocol}
+
+\textbf{1.} As I have OpenSSH pre-installed on my machine, I have logged in to Agate through SSH. I have Agate's public key stored in the list of my known hosts already. As you it is shown below, the Agate's public key (hashed in SHA256) is existing in my local machine's \texttt{known\_hosts} file:
+
+\includegraphics[width=1\columnwidth]{prot_1_local_known_hosts.png}
+
+\textbf{2.} The following command confirms that that the Agate's public key is stored on my machine:
+
+\textbf{\texttt{ssh-keygen -f ~/.ssh/known\_hosts -F agate.cs.unh.edu}}
+
+\textbf{-f}: file name to look up in.
+
+\textbf{-F}: the host to look up for.
+
+
+\includegraphics[width=1\columnwidth]{prot_2_check_known_hosts.png}
+
+\textbf{3.} My SSH client queries including the \textbf{ciphers}, \textbf{MACs}, and \textbf{key-exchange algorithms} supported by \textbf{my local SSH client}:
+
+\includegraphics[width=0.7\columnwidth]{prot_3_ssh_queries_local.png}
+
+\textbf{4.} SSH in verbose mode:
+
+\lstinputlisting{prot_4_ssh_session.log}
+
+I have listed the ciphers used in the exchange. As the authentication to ssh server goes in two steps we can see two set of used ciphers for each side which adds up to 4 sets.
+\textbf{Ciphers used from client to server (ctos) and from server to client (stoc)}:
+
+\begin{lstlisting}
+ciphers client->server: 
+chacha20-poly1305@openssh.com,
+aes128-ctr,
+aes192-ctr,
+aes256-ctr,
+aes128-gcm@openssh.com,
+aes256-gcm@openssh.com
+
+ciphers server->client: 
+chacha20-poly1305@openssh.com,
+aes128-ctr,
+aes192-ctr,
+aes256-ctr,
+aes128-gcm@openssh.com,
+aes256-gcm@openssh.com
+
+
+
+ciphers client->server: 
+aes256-gcm@openssh.com,
+chacha20-poly1305@openssh.com,
+aes256-ctr,
+aes256-cbc,
+aes128-gcm@openssh.com,
+aes128-ctr,
+aes128-cbc
+
+ciphers server->client: 
+aes256-gcm@openssh.com,
+chacha20-poly1305@openssh.com,
+aes256-ctr,
+aes256-cbc,
+aes128-gcm@openssh.com,
+aes128-ctr,
+aes128-cbc
+\end{lstlisting}
+
+
+\textbf{5.} \textbf{ciphers}, \textbf{MACs}, and \textbf{key-exchange algorithms} supported by \textbf{Agate}:
+
+\includegraphics[width=0.7\columnwidth]{prot_5_ssh_queries_agate.png}
+
+
+\textbf{6.} Generate a key pair locally and place it on Agate in order to login to Agate without password:
+
+\begin{enumerate}
+    \item on the local machine
+    \item on Agate
+    \item login without password
+\end{enumerate}
+
+
+\includegraphics[width=1\columnwidth]{prot_6_local.png}
+\includegraphics[width=1\columnwidth]{prot_6_agate.png}
+\includegraphics[width=1\columnwidth]{prot_6_login.png}
+
+
+\section{Password}
+
+\textbf{1.} I have used my VPS as a Linux machine which has \textbf{CentOS Linux release 7.7.1908 (Core)} installed. I created a new user 'victim' and set '123' as the password for this user:
+
+\includegraphics[width=1\columnwidth]{pass_1_add_user.png}
+
+\textbf{2.} As the shadow file is visible below, I have two hashed passwords in the file for the two users available on this machine.
+
+Explanation of the fields available in the shadow file, in order from left to right:
+\begin{enumerate}
+    \item username
+    \item password:
+        \begin{enumerate}
+            \item hashing algorithm id: 1 -> MD5
+            \item salt
+            \item hashed value
+        \end{enumerate}
+    \item last change
+    \item min days change
+    \item max days change
+    \item prior warning days
+\end{enumerate}
+
+\includegraphics[width=1\columnwidth]{pass_2_shadow.png}
+
+\textbf{3.} I installed John the Ripper 1.8 by taking the following steps.
+
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Centos 7 John the Ripper Installation
+yum -y install wget gpgme
+yum -y group install "Development Tools"
+cd
+wget http://www.openwall.com/john/j/john-1.8.0.tar.xz
+wget http://www.openwall.com/john/j/john-1.8.0.tar.xz.sign
+wget http://www.openwall.com/signatures/openwall-signatures.asc
+gpg --import openwall-signatures.asc
+gpg --verify john-1.8.0.tar.xz.sign
+tar xvfJ john-1.8.0.tar.xz
+cd john-1.8.0/src
+make clean linux-x86-64
+cd ../run/
+./john --test
+#password dictionnary download
+wget -O - http://mirrors.kernel.org/openwall/wordlists/all.gz | gunzip -c > openwall.dico
+\end{lstlisting}
+
+\textbf{4.} After the installation, I used JtR to crack victim's password. As this was a very common and unsafe password, we don't even need to use a prolific word list. As it is displayed in the following graph JtR could quickly find the password, '123':
+
+\includegraphics[width=1\columnwidth]{pass_4_cracked.png}
+
+
+%---------------------------------
+
+\end{document}
