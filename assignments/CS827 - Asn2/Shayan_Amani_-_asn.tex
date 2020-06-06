@@ -1,0 +1,157 @@
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+
+\usepackage{inconsolata}
+
+% Required
+\newcommand{\assignmentQuestionName}{Question} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{March, 4, 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Assignment 2} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+%---------------------------------
+%	QUESTION 1
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+\begin{enumerate}
+
+    \item $g = 1$ makes everything open to Trudy since independent of choice of a and b for Alice and Bob, the term $g^a$ and $g^b$ are going to be the same.
+    
+    \item $g = p-1 $ by choosing this, Alice's and Bob's exponents get ineffective in generating a unpredictable secret key since independent of the choice of a and b, we will get 1 (for even a or b) or $g=p-2$ (for odd a or b) as the result of the calculation:
+    
+    $g^a \text{mod} p = (p-1)^a \text{mod} p$
+    
+    for example:
+    
+    $4^3 \text{mod} 5 = 4^5 \text{mod} 5 = 4^7 \text{mod} 5 = ... = 4$
+    
+    And this will get the intrusion easy for trudy to get the secret key.
+    
+\end{enumerate}
+}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 2
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+    \includegraphics[width=1\columnwidth]{p2.jpeg}
+}
+
+
+%--------------------------------------------
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 3
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+   \begin{enumerate}
+   
+    \item \textit{cube root attack} happens if we choose $e = 3$ and if the plaintext $M$ is $M < \sqrt[3]{N}$. This will render the mod operation obsolete since $C = M^3$ and Trudy can calculate $M = \sqrt[3]{C}$ to get the message. We can avoid this phenomenon to happen by simply adding enough bits to M (padding) to make it large enough that $M > \sqrt[3]{N}$.
+    
+    On the other edge of this spectrum, if multiple users all selected $e = 3$ then we can take extra caution to do padding randomly and also adding user-specific information to each message $M$ which finally make different messages.
+    
+    
+    \item As I argued above if $M < \sqrt[3]{N}$ and we select $e = 3$ \textit{cube root attack} happens. 
+    
+    
+\end{enumerate}
+}
+
+\includegraphics[width=1\columnwidth]{p3-2.jpeg}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 4
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+
+\begin{enumerate}
+    \item By choosing a cryptographic function h, Alice will sign M by first hashing M then signing the hash, that is, Alice computes $S = [h(M)]_{Alice}$. Hashes are efficient and only a small number of bits need to be signed. Then Alice can send Bob M and S. Bob verifies the signature by hashing M and comparing the result to the value obtained when Alice's public key is applied to S. That is, Bob verifies that $h(M) = \{S\}_{Alice}$· Note that only the message M and a small number of additional check bits, namely S, need to be sent from Alice to Bob.
+    
+    \item For an insecure public key system, Trudy basically have access to the private key. So Trudy can send a another message $M'$ and calculate hash of this new message $h(M')$ which means he will get a tampered (forged) signature and then sign it with Alice's private key $S' = [h(M')]_{Alice}$. Trudy finally send this pair to Bob and pretend that this message has been signed and sent by Alice.
+    
+    \item An insecure hash function can at least violate one of the feature of a proper crypto hash function. It could be that the hash function has a poor collision resistance that means Trudy can find another message $M'$ for which $h(M') = h(M)$. Then Trudy send the tampered message $M'$ and the untouched signature signed by Alice $S = [h(M)]_{Alice}$ to Bob and pretend that the message $M'$ is sent by Alice.
+\end{enumerate}
+
+}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 5
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+
+If Trudy has access to the key $k$, HMAC has still a hash value to check the integrity of the message but in case of MAC, by knowing the key, Trudy can tamper the message and there is no way to check the integrity of the message.
+
+Therefore in MAC system, security of the key k is important.
+
+One can compare MAC and HMAC like the following:
+
+MAC is a tag or a piece of information that helps to check integrity of a message. But HMAC is a special type of MAC with a cryptographic hash function and a secret cryptographic key.
+
+If the intruder knows the key, HMAC still has a hash function to check the integrity and is safe to key revelation to the attacker.
+}
+
+\end{question}
+
+%---------------------------------
+
+\end{document}

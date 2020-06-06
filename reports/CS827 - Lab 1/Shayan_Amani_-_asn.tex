@@ -1,0 +1,118 @@
+
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\usepackage{inconsolata}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{listings}
+
+\newcommand{\NIL}{\mathrm{NIL}}
+
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+% Required
+\newcommand{\assignmentQuestionName}{} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{Wednesday,\ March\ 11,\ 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Lab 1} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+
+%---------------------------------
+%	REPORT
+%---------------------------------
+
+\textbf{1.}, \textbf{2.}, and \textbf{3.} I have downloaded and changed the hexadecimal information in the provided image file. There is no human-eye-noticable difference between the tampered picture and the original one:
+
+\includegraphics[width=1\columnwidth]{name.png}
+\includegraphics[width=1\columnwidth]{hex-file.png}
+\includegraphics[width=1\columnwidth]{alice-comparison.png}
+
+
+\textbf{4.} By comparison, the digest for the steganography-manipulated file is different than the one for the original file. The avalanche effect is obvious as by slight change in the original file, the digest is changing in high degree:
+
+\includegraphics[width=1\columnwidth]{digest.png}
+
+\textbf{5.} I have genertated a private and a public key:
+\begin{lstlisting}[language=bash]
+    $ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 
+    -out private-key.pem
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=bash]
+    $ openssl pkey -in private-key.pem -out public-key.pem -pubout
+\end{lstlisting}
+
+
+\textbf{6.} Using the generated private key, I signed the digest of the new image file (\texttt{alice-new.bmp.sha256}):
+
+\begin{lstlisting}[language=bash]
+    $ openssl dgst -sha256 -sign private-key.pem -out 
+    alice-new.bmp.sha256 alice-new.bmp 
+\end{lstlisting}
+
+
+\textbf{7. 8.} The implementation of TEA algorithm in two modes, ECB and CBC has been provided with the uploaded files. The code implementation is compatible with Java 9 and above. You can run the corresponding Java artifacts (jar files). In order to run the programs, I have provided four artifact in the project root folder \texttt{TEA}. 
+
+Please run the programs as follows:
+
+\begin{enumerate}
+    \item Encryption:
+    
+        \texttt{java -jar <JAR\_FILE> <KEY> <PLAINTEXT> <CIPHERTEXT>}
+        
+        example:
+        
+        \texttt{java -jar tea-enc-cbc.jar shayanam res/alice-new.bmp cbc-alice-enc.bmp}
+        
+    \item Decryption:
+    
+        \texttt{java -jar <JAR\_FILE> <KEY> <CIPHERTEXT> <PLAINTEXT>}
+        
+        example:
+
+        \texttt{java -jar tea-dec-cbc.jar shayanam cbc-alice-enc.bmp cbc-alice-dec.bmp }
+        
+\end{enumerate}
+
+
+The utilized key is a 8 character-long string.
+
+\textbf{Note:} The key used in enc/dec in my submission is my first and last name: \textbf{\texttt{shayanam}}
+
+\includegraphics[width=1\columnwidth]{comparison-final.png}
+
+\textbf{Note:} I left the header readable to figure out the encrypted version and decrypted version visually.
+
+
+%---------------------------------
+
+\end{document}

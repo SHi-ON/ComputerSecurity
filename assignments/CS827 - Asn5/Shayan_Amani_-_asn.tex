@@ -1,0 +1,129 @@
+
+%---------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------
+
+\documentclass[11pt]{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%---------------------------------
+%	ASSIGNMENT INFORMATION
+%---------------------------------
+
+\usepackage{inconsolata}
+
+% Required
+\newcommand{\assignmentQuestionName}{Question} % The word to be used as a prefix to question numbers; example alternatives: Problem, Exercise
+
+\newcommand{\assignmentDueDate}{April, 29, 2020} % Due date
+\newcommand{\assignmentClass}{CS 827} % Course/class
+\newcommand{\assignmentTitle}{Assignment 5} % Assignment title or name
+\newcommand{\assignmentAuthorName}{Shayan Amani (sa1149)} % Student name
+%\newcommand{\assignmentClassInstructor}{PROFESSOR NAME} % Instructor name/time/description
+
+%---------------------------------
+
+\begin{document}
+
+%---------------------------------
+%	TITLE PAGE
+%---------------------------------
+
+% 11.7 Problems:
+%   1 -> 11
+%   2 -> 15
+%   3 -> 16
+%   4 -> 22
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\newpage
+
+%---------------------------------
+%	QUESTION 1
+%---------------------------------
+
+\begin{question}
+
+% https://www.chegg.com/homework-help/questions-and-answers/virus-writers-use-encryption-polymorphism-metamorphism-evade-signature-detection--signific-q43572640
+
+% https://www.chegg.com/homework-help/questions-and-answers/virus-writers-use-encryption-polymorphism-metamorphism-evade-signature-detection-significa-q21971837
+\answer{
+    \texttt{strcpy} is unsafe because it can read from the buffer overflow area of memory. But it's counterpart \texttt{strncpy} reads for a determined number of bytes from the buffer so it is safer.
+    
+    Contrary to common belief \texttt{strncpy} was not created to replace \texttt{strcpy}. It fails to \texttt{null} terminates the string when the source string is larger than the \texttt{num} of parameters, so you have to do it manually. Like this:
+    
+    \texttt{
+    strncpy(dst, src, num);
+    dst[num - 1] = 0;}
+        
+    Which requires 2 lines to achieve 1 simple goal and it is easy for developers to forget the second one.
+    
+    Besides that, it always writes \texttt{num} characters (appends 0's if necessary) regardless of the sizes of the strings which can be a performance concern when \texttt{dst} is small and \texttt{num} is large.
+}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 2
+%---------------------------------
+
+\begin{question}
+
+\questiontext{}
+
+\answer{
+    \textbf{Part a)} the output:\\ 
+    \texttt{BEFORE: buf2 = 22222222AFTER: buf2 = 11122222}
+    
+    \textbf{Part b)} the program allocates and sets adjacent memory location by which, it overwrites the first 3 bytes of buf2 with '1'. As the program allocates 8 bytes of memory to both buf1 and buf2, the second \texttt{memset} takes the size of \texttt{diff + 3} which is $8 + 3 = 11$ bytes and this causes a over-boundary access and setting memory location.
+    
+    \textbf{Part c)} as the program loads onto memory some of the variables might live on the heap, so accessing and manipulating the locations belong to these elements of the program could lead to unexpected behavior of the program and also unpredictable situation. Trudy can take advantage of all of these to interfere or even crash the program or the system in any sophisticated ways.
+}
+
+\end{question}
+
+%---------------------------------
+%	QUESTION 3
+%---------------------------------
+
+\begin{question}
+
+\answer{
+   
+   \textbf{Part a)} an access or attempt to out of defined range of variable is said to be called an \textbf{integer overflow}. Depending on the \textit{sign} of the variable or the \textit{range} this type of overflow might occur. 
+    Basically an integer is a region in memory capable of holding values with size up to four bytes.
+    So if this value can be controlled and a value is submitted that is larger in size than 32 bits an integer overflow happens.
+    So according to C the maximum size of a signed int is INT\_MAX = 2147483647, The maximum size of an unsigned int is UINT\_MAX = 4294967295.
+    
+   In case of len < 0 We will get an overflow because memcpy tried to copy negative data to buffer. It throws Segmentation fault in practice!
+   
+   \textbf{Part b)} Trudy can cause a variety of undefined cases by entering unexpected inputs as the len that needs to be read for memcpy. In this particular case, reading from one buffer and copying to other one for a negative amount has undefined behavior.
+}
+
+\end{question}
+
+
+
+%---------------------------------
+%	QUESTION 4
+%---------------------------------
+
+\begin{question}
+\answer{
+     \textbf{Part a)} polymorphic worms as viruses try to copy themselves and remain hidden by encrypting themselves with an encryption key. They remain unidentifiable because each copy is encrypted differently and so they look distinguished. Encrypted worms on the other hand, are the viruses that have encrypted code, so that they remain unidentified by the antivirus programs. They remain encrypted until they need to be executed. There is a decryption code along with the virus, which is used to decipher the encrypted code to occur its damages.
+     encrypted virus encrypt itself and decode itself but remain single.
+     Polymorphic virus makes copies and that copies are encrypted in    different way.
+    
+    
+    \textbf{Part b)} metamorphic worms are the ones which changes their code for each iteration,so that they can remain hidden. Polymorphic virus change the encryption key of its copies and are not difficult to write as compared with metamorphic virus. Metamorphic virus changes its code each iteration. it is very difficult to write a metamorphic virus program
+    
+}
+\end{question}
+
+%---------------------------------
+
+\end{document}
